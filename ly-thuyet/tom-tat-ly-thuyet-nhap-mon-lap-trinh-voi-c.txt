@@ -4225,11 +4225,11 @@ Có những kí tự để báo hiệu một điều gì đó, có thể hữu h
 
 Cách để lưu được một chuỗi kí tự vào trong RAM, liên quan đến mảng và con trỏ.
 
-Tất cả các hàm liên quan đến chuỗi luôn nhận tham số đầu vào là tên mảng/con trỏ (char*) - truyền tham chiếu, vì bản chất nó cũng chỉ đơn giản là tên của một mảng nhưng được bỏ ngoặc vuông đi, bên trong chứa địa chỉ của phần tử đầu tiên trong mảng. Một khi đã truyền vào toạ độ của biến đầu tiên thì cũng tự động suy ra được những phần tử còn lại, kế tiếp trong mảng vì chúng nằm chung một dãy Byte.
+Tất cả các hàm liên quan đến chuỗi đều luôn nhận tham số đầu vào là tên mảng/con trỏ (char*) - truyền tham chiếu, vì bản chất con trỏ cũng chỉ đơn giản là tên của một mảng nhưng được bỏ ngoặc vuông đi, bên trong chứa địa chỉ của phần tử đầu tiên trong mảng. Một khi đã truyền vào toạ độ của biến đầu tiên thì cũng tự động suy ra được những phần tử còn lại, kế tiếp trong mảng vì chúng nằm chung một dãy Byte.
 
 	Vì: int* a (con trỏ) = int a (tên mảng, bỏ []) = biến để lưu địa chỉ
 
-		-> Tất cả các hàm liên quan đến chuỗi đều là truyền tham chiếu, truyền tên mảng vào cho hàm chính là truyền con trỏ.
+		-> Tất cả các hàm liên quan đến chuỗi đều là truyền tham chiếu, việc truyền tên mảng vào cho hàm chính là truyền con trỏ.
 
 => Chuỗi = mảng = con trỏ.
 
@@ -4325,12 +4325,14 @@ Các cách để khai báo chuỗi và đưa dữ liệu vào.
 		// là kí tự để kết thúc việc nhập,
 		// còn những kí tự khác đều sẽ không quan tâm đến
 		scanf("%[^\n]", name);
+		// Nhập vào và nhận tất cả các kí tự,
+		// ngoại trừ kí tự '\n' - kí tự xuống hàng (enter)
 
 	Ví dụ 3: cách 3 - nhập tự do và không giới hạn độ dài
 
 		// Sử dụng cặp lệnh mới:
-		//	gets(name);	: nhập vào (tương đương với scanf) và không giới hạn độ dài nên sẽ khá nguy hiểm, nhưng sẽ giúp đa dạng trong việc nhập
-		//	puts(name);	: in ra (tương đương với printf) và tự động xuống hàng
+		//	gets(char *);	: nhập vào (tương đương với scanf) và không giới hạn độ dài nên sẽ khá nguy hiểm vì có thể sẽ bị đè phần phía sau, nhưng sẽ giúp đa dạng trong việc nhập
+		//	puts(char *);	: in ra (tương đương với printf) và tự động xuống hàng
 
 		// Câu lệnh nhập vào, tương đương với scanf()
 		gets(name);
@@ -4345,9 +4347,10 @@ Các cách để khai báo chuỗi và đưa dữ liệu vào.
 	Ví dụ 1: cách 1 -  sử dụng hàm strcpy có sẵn
 		char n1[50] = "Ahihi";
 
-		// Ta không thể khai báo trước rồi sau đó gán giá trị
-		// vì dấu bằng (=) chỉ được dùng ngay lúc khai báo
-		// hoặc khi gán giá trị cho một biến đơn
+		// Ta không thể khai báo trước rồi sau đó gán giá trị cho chuỗi
+		// vì dấu bằng (=) chỉ được dùng ngay lúc khai báo,
+		// khi gán giá trị cho một biến đơn
+		// hoặc khi sử dụng con trỏ thuần chủng
 
 		// Còn với loại chuỗi/mảng có nhiều biến thì không thể được
 		// khi lúc này chuỗi/mảng đang cần nhận vào một địa chỉ,
@@ -4356,7 +4359,7 @@ Các cách để khai báo chuỗi và đưa dữ liệu vào.
 		char name1[50];
 		name = "Ahihi"; // Không được
 
-		// Hai biến đơn có thể gán giá trị cho nhau,
+		// Hai biến đơn có thể gán trực tiếp giá trị cho nhau,
 		// nhưng hai mảng (con trỏ) thì lại không thể
 		// vì đây là con trỏ giả và được sử dụng để quản lý mảng
 		// nên không thể trỏ đến nơi khác mà chỉ được trỏ duy nhất đầu dãy,
@@ -4397,6 +4400,40 @@ Ví dụ: khai báo một mảng bằng dấu nháy kép "", sau đó tìm cách
 	// (ở đây là toàn bộ chuỗi)
 	// vì mảng là một dãy Byte liên tiếp
 	printf("The original name: %s\n", name);	// In ra: chuỗi "thuan"
+
+------------------------------------------------------------------------
+
+[XOÁ KÍ TỰ TRONG CHUỖI]
+
+* Giả sử có một chuỗi đang bị thừa kí tự:
+
+	char s[50] = "A1hihi";
+
+	* Mảng trước khi xoá kí tự thừa
+	-------------------------------------------------------------------
+	│  A  │  1  │  h  │  i  │  h  │  i  │  \0 │     │ ... │     │     │
+	-------------------------------------------------------------------
+	  [0]   [1]   [2]   [3]   [4]   [5]   [6]   [7]         [48]  [49]
+
+
+	* Thuật toán: tìm vị trí cần xoá và dời những vị trí còn lại phía sau lên
+
+			for (pos -> cuối)
+				s[i] = s[i + 1];
+
+					a[1] = a[2];
+					a[2] = a[3];
+					a[3] = a[4];
+					a[4] = a[5];
+					a[5] = a[6];	// NULL
+					// Lúc này, trong RAM sẽ có đến hai kí tự NULL
+
+
+	* Mảng sau khi xoá kí tự thừa
+	-------------------------------------------------------------------
+	│  A  │  h  │  i  │  h  │  i  │  \0 │  \0 │     │ ... │     │     │
+	-------------------------------------------------------------------
+	  [0]   [1]   [2]   [3]   [4]   [5]   [6]   [7]         [48]  [49]
 
 ==========================================================================================
 
