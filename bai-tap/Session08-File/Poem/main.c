@@ -38,7 +38,7 @@ void readFile() {
 
 // Ghi/Lưu - tải từ RAM xuống ổ đĩa
 void writeFile() {
-	// Truyền tên tập tin (từ-ấy.txt) và chế độ (write),
+	// Truyền tên tập tin (từ-ấy.txt) ở chế độ (write)
 	// và nối đuôi (append)
 	FILE* f = fopen("tu-ay.txt", "a");
 	

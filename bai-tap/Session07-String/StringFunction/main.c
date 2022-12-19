@@ -27,7 +27,7 @@ void removeCharV4();
 
 int main(int argc, char *argv[]) {
 	
-//	char s2[50], s1[50] = "Ahihi";
+	char s2[50], s1[50] = "Ahihidaucobigiidauta";
 	
 //	// Hàm nhà người ta
 //	strcpy(s2, s1);
@@ -35,8 +35,10 @@ int main(int argc, char *argv[]) {
 //	puts(s2);
 
 //	// Hàm nhà làm
-//	strcpy(s2, s1);
-//	printf("Name (DIY): ");
+	strcpy(s2, s1);
+	printf("Name (DIY): ");
+	for (int i = 0; i < strlen(s2); i++)
+		printf("%c ", s2[i]);
 //	puts(s2);
 
 	//removeChar();
@@ -45,7 +47,7 @@ int main(int argc, char *argv[]) {
 
 	//removeCharV3();
 
-	removeCharV4();
+	//removeCharV4();
 	
 	return 0;
 }
@@ -54,7 +56,7 @@ int main(int argc, char *argv[]) {
 // hoặc tất cả các kí tự lạ xuất hiện trong chuỗi
 // (Có khả năng phải xoá nhiều lần - xoá lặp lại)
 void removeCharV4() {
-	// Xoá kí tự '#' tại vị trí [4]
+	// Xoá toàn bộ số 1 trong chuỗi
 	char s[50] = "A111H";
 	
 	// Dồn những phần tử ở phía sau lên
@@ -62,9 +64,9 @@ void removeCharV4() {
 	// Cách 1: duyệt hết mảng để kiểm tra
 	//		   từng kí tự có phải là số và sau đó xoá số
 	for (int i = 0; i < strlen(s); i++) {
-		// Nếu là con số từ 0..9
+	
+			// Tìm thấy thì xoá	// Nếu là con số từ 0..9
 		if (s[i] >= '0' & s[i] <= '9') {
-			// Tìm thấy thì xoá
 			// từ vị trí [i] trỏ về sau
 			for (int j = i; j < strlen(s); j++)
 				s[j] = s[j + 1];
@@ -160,7 +162,7 @@ void removeChar() {
 void strcpyCust(char* dest, char* src) {
 	// Đi từ đầu đến cuối chuỗi gốc (chuỗi gửi dữ liệu)
 	// Dấu <= để đảm bảo cả kí tự NULL cũng được đưa sang
-	for (int i = 0; i <= strlen(src); i++)
+	for (int i = 0; i < strlen(src); i++)
 		// Sao chép từng phần tử sang
 		dest[i] = src[i];
 }

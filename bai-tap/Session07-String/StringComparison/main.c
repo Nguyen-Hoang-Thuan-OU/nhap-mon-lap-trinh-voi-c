@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 		printf("r3 = s1 not greater than s2\n"); //
 		
 	// Gán giá trị mới cho s1 và s2
-	// * Trường hơn s1 < s2
+	// * Trường hợp s1 < s2
 	strcpy(s1, "Ahihi");
 	strcpy(s2, "z");
 	
@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 	printf("r4 = s1 vs. s2: %d\n", result); // -1
 		
 	// Gán giá trị mới cho s1 và s2
-	// * Trường hơn s1 > s2
+	// * Trường hợp s1 > s2
 	strcpy(s1, "Ahihi");
 	strcpy(s2, "AH");
 	
@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 	printf("r5 = s1 vs. s2: %d\n", result); // 1
 		
 	// Không phân biệt chữ hoa và chữ thường
-	// * Trường hơn s1 = s2
+	// * Trường hợp s1 = s2
 	strcpy(s1, "Ahihi");
 	strcpy(s2, "AHIHI");
 	

@@ -73,14 +73,14 @@ void storeNameV10() {
 	char n2[50] = {'A', 'h', 'i', 'h', 'i', '\0'};
 	
 	// Gán từng kí tự và kết thúc bằng NULL (mã ASCII)
-	char n3[50] = {'A', 'h', 'i', 'h', 'i', '0'};
+	char n3[50] = {'A', 'h', 'i', 'h', 'i', 0};
 	
 	// Khai báo trước nhưng sẽ gán sau
 	char name[50];
 	
 	// Không cho vì cách này chỉ sử dụng được cho biến đơn
 	// hoặc khi vừa khai báo và vừa gán
-	//name1 = "Ahihi";
+	//name = "Ahihi";
 	
 	// Hai mảng (con trỏ) cũng không thể gán giá trị cho nhau
 	// vì đều có chung nhiệm vụ trỏ đến phần tử đầu tien
@@ -103,7 +103,8 @@ void storeNameV9() {
 	// Câu lệnh nhập vào, tương đương với scanf()
 	gets(name);
 	// In ra (trong trường hợp này là chuỗi vừa nhập)
-	// rồi sau đó tự động xuống dòng
+	// rồi sau đó tự động xuống dòng,
+	// gần tương đương với printf()
 	puts(name);
 	
 	printf("Your name is: %s", name);
@@ -185,6 +186,7 @@ void storeNameV4() {
 	
 	// Chỉ đổi từ thường thành hoa nếu là kí tự từ a-z
 	for (int i = 0; i < strlen(name); i++)
+		//if (name[i] >= 97 && name[i] <= 122)
 		if (name[i] >= 'a' && name[i] <= 'z')
 			name[i] -= 32;
 	
@@ -234,17 +236,17 @@ void storeNameV2() {
 	// đang chứa những giá trị gì
 	printf("The rest of the array after NULL:\n");
 	for (int i = 0; i < 50; i++)
-		printf("%c", name[i]);
+		printf("ahihi %c", name[i]);
 }
 
 // Khai báo chuỗi kiểu mảng kí tự
 void storeName() {
-	//int   a[] = { 1,   2,   3,    4,  5,   6};
-	char name[] = {'S', 'O', 'S', '\0','$', '#'};
-	//			   ------------- Chuỗi
-	//			   ---------------------------- Mảng
+	//int     a[] = { 1,   2,   3,    4,   5,   6};
+	char name[50] = {'S', 'O', 'S', '\0', '$', '#'};
+	//				 ------------- Chuỗi
+	//				 ----------------------------- Mảng kí tự
 	
-	//char name[] = {65, 'O', 'S', 0,'$', '#'}; // AOS
+	//char name[] = {65, 'O', 'S', 0, '$', '#'}; // AOS
 
 	// Hàm xem độ dài của chuỗi
 	int len = strlen(name);
