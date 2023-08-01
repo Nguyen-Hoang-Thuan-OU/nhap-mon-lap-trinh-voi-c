@@ -302,7 +302,7 @@ Quy trình [đơn giản] để phát triển một chương trình:
 
 	- Integrated Development Environment (IDE): môi trường phát triển tích hợp nhiều thứ trong một.
 		+ Đây là một công cụ lớn, phức tạp nhưng có nhiều tính năng và có đầy đủ mọi thứ để ngay lập tức bắt đầu vào lập trình.
-		+ Cho phép gõ code, sửa lỗi trong quá trình lập trình, tự động biên dịch / thông dịch để ra được tập tin nhị phân và đóng gói thành thư viện hoặc tập tin có thể thực thi được.
+		+ Cho phép gõ code, sửa lỗi (theo từng dòng lệnh) trong quá trình lập trình, tự động biên dịch / thông dịch để ra được tập tin nhị phân và đóng gói thành thư viện hoặc tập tin có thể thực thi được...
 
 		Ví dụ: Dev-C++, Code::Blocks, xCode, Eclipse, NetBeans, Visual Studio, IntelliJ...
 
@@ -1258,7 +1258,7 @@ Binary (BIN)		Octal (OCT)		Decimal (DEC)		Hexa-Decimal (HEX)
 
 ----------------------------------------
 
-* Chuyển đổi hệ cơ số/hệ đếm (bảng ánh xạ):
+* Chuyển đổi hệ cơ số/hệ đếm (bảng ánh xạ / "bảng cửu chương"):
 
 Nhị phân (2)		Bát phân (8)		Thập phân (10)		Thập lục phân (16)
 Binary (BIN)		Octal (OCT)		Decimal (DEC)		Hexa-Decimal (HEX)
@@ -6033,7 +6033,7 @@ Vùng dữ liệu để sử dụng chung, những biến tĩnh (static) và nh�
 
 Là vùng nhớ đã có sẵn tên, do hệ điều hành kiểm soát, bố trí vùng RAM và quản lý vô cùng nghiêm ngặt, con người không có quyền can thiệp hay kiểm soát.
 
-	- Toàn bộ những biến được khai báo trong nội bộ hàm (kể cả hàm main()) / câu lệnh (cục bộ) - thuộc những kiểu dữ liệu cơ bản, dù là biến thường hay biến con trỏ, đều sẽ nằm riêng ở đây.
+	- Chuyện được sử dụng để lưu lại những tao tác mà CPU đang xử lý. Đồng thời, toàn bộ những biến được khai báo trong nội bộ hàm (kể cả hàm main()) / câu lệnh (cục bộ) - thuộc những kiểu dữ liệu cơ bản, dù là biến thường hay biến con trỏ, đều sẽ nằm riêng ở đây.
 
 	- Tốc độ cấp phát sẽ nhanh hơn so với Heap vì kích thước của vùng nhớ là cố định.
 	
@@ -6050,6 +6050,18 @@ Là vùng nhớ đã có sẵn tên, do hệ điều hành kiểm soát, bố tr
 		}
 
 Vùng nhớ trên Stack sẽ được cấp phát / hoạt động theo nguyên tắc LIFO (Last In, First Out) - hẻm cụt: biến nào được khai báo gần nhất thì sẽ được lấy ra để sử dụng trước.
+	- Đệ quy là một dạng LIFO, nhưng khi viết những chương trình, nếu không khéo sẽ có thể bị tràn bộ nhớ (Stack overflow).
+	- Nguyên nhân là thiếu mất điều kiện dừng, khiến cho công thức tính toán liên tục bị tạm hoãn và liên tục lặp lại với một quy mô khác.
+	- Vì vùng nhớ này có giới hạn, khiến việc lặp lại nếu đến một mức độ nào đó (tuỳ theo sức chứa của kiểu dữ liệu) sẽ bị tràn bộ nhớ.
+
+	Ví dụ: Danh sách những việc cần làm, việc quan trọng để lên đầu tiên.
+
+		Đang ăn chơi thì mẹ nhờ đi chợ				- Mua đồ giúp ghệ.
+		Đang đi chợ cho mẹ thì ba nhờ mua đồ			- Mua đồ giúp chị/em.
+		Đang đi mua đồ cho ba thì chị/em gái nhờ mua đồ		- Mua đồ giúp ba.
+		Đang đi mua đồ cho chị/em gái thì ghệ nhờ mua đồ	- Đi chợ giúp mẹ.
+
+		-> Vào sau nhưng đươc ưu tiên xử lý trước.
 
 Quản lý các hàm và các biến ra/vô một cách rất nghiêm ngặt.
 
