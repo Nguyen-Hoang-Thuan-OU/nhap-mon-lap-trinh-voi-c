@@ -1578,7 +1578,8 @@ Khi có quá nhiều thông tin (số liệu / dữ liệu - data) xung quanh cu
 ----------------------------------------
 
 	* Hằng số (Constant): là một vùng RAM chỉ cho phép đọc, nhưng không cho phép chỉnh sửa dữ liệu (read-only).
-		- Dữ liệu sẽ được gán song song với lúc khai báo, không thuộc về bất kì hàm nào - Global variable.
+		- Dữ liệu sẽ được gán một lần duy nhất (song song với lúc khai báo), về sau sẽ không bao giờ được thay đổi (gán, cấp phát lại)
+		- Không thuộc về bất kì hàm nào - Global variable.
 		- Thường áp dụng cho những giá trị không bao giờ bị thay đổi (ví dụ: số pi, tốc độ ánh sáng - c...) hoặc rất hiếm khi phải thay đổi (ví dụ: thuế giá trị gia tăng...).
 		-> Đại lượng chỉ cho phép khai báo mà không cho thay đổi giá trị (kiểu read-only).
 
@@ -2980,9 +2981,11 @@ Khi trong code có quá nhiều if-else lồng nhau (Nested) do trục số nhi�
 
 	- Để sử dụng switch-case, biến bắt buộc phải là những kiểu dữ liệu rời rạc và đếm được (int hoặc char).
 		+ Vì chúng sẽ giúp lựa chọn được một cách rõ ràng khi giữa hai giá trị không còn một giá trị nào khác.
+		+ Nhưng chỉ có kiểu int mà không có kiểu long, vì kiểu long có kích thước lớn nên việc xử lý và so sánh giá trị kiểu long sẽ tốn nhiều tài nguyên hơn.
 		+ Sở dĩ kí tự (char) có thể sử dụng trong switch-case là vì nó được chống lưng bởi một con số nguyên (int) trong bảng mã ASCII.
 		+ Không được sử dụng dạng chuỗi hoặc số thực (float, double) - một loại số tương đối, vì giá trị giữa những số thực với nhau sẽ không chính xác khi có thể có vô hạn phần thập phân, đó là do chúng ta đang sử dụng chuẩn IEEE 754 để biểu diễn số thực và chỉ biểu diễn ở mức gần đúng (ví dụ: 0.1 + 0.2 = 0.30000000000000004).
 			* IEEE (Institute of Electrical and Electronics Engineers): Hội Kỹ sư Điện và Điện tử - một tổ chức phi lợi nhuận. Họ tổ chức rất nhiều phiên họp, mỗi phiên họp bàn luận về một chủ đề và được đánh một con số.
+		+ Trong Java, tuy vẫn không hỗ trợ kiểu dữ liệu số nguyên long, nhưng lại hỗ trợ những kiểu dữ liệu phức tạp (ví dụ: Integer, Character, String...), đó là vì bản thân những kiểu dữ liệu phức tạp này đã chứa sẵn phương thức equals() ở bên trong.
 
 		Ví dụ: thử sử dụng loại số tương đối (số thực) trong câu lệnh switch-case
 			
@@ -3667,67 +3670,55 @@ Tuỳ vào người lập trình viên mà sẽ có 2 phong cách thiết kế h
 	1. Vì return tương đương với lối thoát, cũng giống như nhà chỉ có một cửa thoát, nên hàm chỉ nên có một cửa thoát đó là sau khi đã tính toán xong hết tất cả các giá trị và chuẩn bị trả về giá trị. Đòi hỏi phải kiếm soát được mạch đi của hàm, nhưng sẽ giúp dễ dàng, nhất quán và có được tư duy tổng thể trong việc kiểm soát giá trị đầu ra.
 		-> [Hàn lâm] Có duy nhất một lệnh return ở cuối hàm để trả về giá trị sau khi đã tính toán, giúp kiểm soát giá trị đầu ra.
 
-			Ví dụ: sử dụng return ở cuối
-				
-				int getFactorialV4(int n) {
-					int acc = 1;
-	
-					if (n == 0 || n == 1)
-						acc = 1;
-					else
-						for (int i = 2; i <= n; i++)
-							acc *= i;
+		Ví dụ: sử dụng return ở cuối
+			
+			int getFactorialV4(int n) {
+				int acc = 1;
 
-					// Sử dụng return ở cuối
-					return acc;
-				}
+				if (n == 0 || n == 1)
+					acc = 1;
+				else
+					for (int i = 2; i <= n; i++)
+						acc *= i;
+
+				// Sử dụng return ở cuối
+				return acc;
+			}
 
 ----------
 
 	2. Cũng giống như việc một trung tâm mua sắm có nhiều cửa thoát, hàm cũng nên có nhiều lối thoát, trong bất kì tình huống nào, miễn đã xác định được giá trị của hàm thì dừng luôn mà không cần phải đợi đến cuối mới return. Trong tình huống này, mỗi cửa thoát sẽ có những giá trị khác nhau và yêu cầu phải kiểm soát được từng giá trị tại từng thời điểm.
 		-> [Thực dụng] Có được giá trị ở đâu thì lập tức return ở đấy, bất kì khi nào có được giá trị cho hàm.
 
-			Ví dụ: sử dụng return bất kì khi nào có được giá trị cho hàm
-				
-				int getFactorialV4(int n) {
-					int acc = 1;
-	
-					if (n == 0 || n == 1)
-						// Nếu CPU chạm vào được return
-						// thì lập tức thoát chương trình
-						// mà không cần quan tâm phần còn lại
-						// và giá trị 1 sẽ được đẩy lên trên tên hàm
-						return 1;
-					else
-					{
-						for (int i = 2; i <= n; i++)
-							acc *= i;
+		Ví dụ: sử dụng return bất kì khi nào có được giá trị cho hàm
+			
+			int getFactorialV4(int n) {
+				int acc = 1;
 
-						return acc;
-					}
+				if (n == 0 || n == 1)
+					// Nếu CPU chạm vào được return
+					// thì lập tức thoát chương trình
+					// mà không cần quan tâm phần còn lại
+					// và giá trị 1 sẽ được đẩy lên trên tên hàm
+					return 1;
+				else
+				{
+					for (int i = 2; i <= n; i++)
+						acc *= i;
+
+					return acc;
 				}
+			}
 
 => Phải kiểm soát lúc nào thì return và return với giá trị gì.
 
 --------------------
 
-Trong hàm do người dùng tự định nghĩa (User-defined function), giá trị trả về của câu lệnh retrun lại mang một ý nghĩa khác.
+Giá trị (số nguyên: -1, 0, 1) trả về của câu lệnh retrun sẽ mang những ý nghĩa khác nhau nhằm thông báo cho hệ điều hành hoặc môi trường thực thi chương trình về trạng thái thực thi của hàm / chương trình:
 
-	- return 0 = false: hàm xử lý không thành công.
-	- return 1 = true: hàm xử lý thành công.
-
-* So sánh sự khác nhau giữa return 0 và return 1 khi được sử dụng trong hàm main () và khi được sử dụng trong hàm do người dùng tự định nghĩa.
-
-	-----------------------------------------------------------------------------------------
-	| Trường hợp sử dụng	|	return 0		|	return 1		|
-	|-----------------------|-------------------------------|-------------------------------|
-	| Trong hàm main()	| Thông báo rằng chương trình	| Thông báo rằng có lỗi xảy ra	|
-	|			| đã được thực thi thành công	| và chương trình		|
-	|			|				| thực thi KHÔNG thành công	|
-	|-----------------------|-------------------------------|-------------------------------|
-	| Trong hàm người dùng	| Thông báo rằng chương trình	| Thông báo rằng chương trình	|
-	|  tự định nghĩa	| xử lý KHÔNG thành công	| đã xử lý thành công		|
-	-----------------------------------------------------------------------------------------
+	- return -1: Không thể tiếp tục thực thi vì gặp phải một lỗi.
+	- return 0: Thực thi thành công và không có lỗi xảy ra.
+	- return 1: Vẫn thực thi thành công, nhưng có xảy ra bất thường (lỗi nhỏ, cảnh báo...).
 
 --------------------
 
@@ -5718,20 +5709,59 @@ Khi có hai biến ở sát nhau, nếu sử dụng phép tăng/giảm tự thâ
 
 Cũng giống như việc làm bánh, mặc kệ cho bột bánh ở hình dạng và trạng thái nào, sau khi đổ bánh vào khuôn và nướng lên thì sẽ cho ra hình dạng mong muốn.
 
-* Cú pháp: (kiểu-dữ-liệu) <biểu-thức / tênBiến>
+Có hai dạng ép kiểu phổ biến trong C:
+
+	1. Ép kiểu ngầm định (Implicit Casting / Widening):
+		- Chuyển từ kiểu dữ liệu nhỏ sang lớn (một vật nhỏ - đang đựng trong một túi nhỏ, được chuyển sang đựng trong một túi lớn hơn).
+		- Không cần phải khai báo thêm bất kì cứ pháp nào, chỉ việc tự động gán giá trị cho biến có kiểu dữ liệu lớn hơn.
+
+		Ví dụ: Ép kiểu ngầm định từ int sang double.
+
+			// Giá trị ban đầu thuộc kiểu int
+			int num = 10;
+
+			// Ngầm định gán giá trị sang cho một biến kiểu double (lớn hơn)
+			double result = num;
+
+	2. Ép kiểu tường minh (Explicit Casting / Narrowing):
+		- Chuyển từ kiểu dữ liệu lớn về nhỏ (một vật lớn - đang đựng trong một túi lớn, bị chèn ép và đựng trong một túi nhỏ hơn).
+		- Nếu không cẩn thận, chắc chắn sẽ xảy ra tình trạng mất mát dữ liệu, dẫn đến những sai sót trong tính toán vì kiểu dữ liệu mới "không đủ sức chứa" kiểu dữ liệu cũ.
+		- Cần phải sử dụng thêm toán tử ép kiểu (cast operator), được ký hiệu bằng các cặp dấu ngoặc tròn và kiểu dữ liệu mới muốn chuyển đổi: (int), (float)...
+
+		* Cú pháp: (kiểu-dữ-liệu) <biểu-thức / tênBiến>
+
+			Ví dụ: Ép kiểu tường minh từ double sang int.
+
+				// Khi báo một biến pi kiểu double
+				double pi = 3.14;
+
+				// Khai báo biến trung gian để ép kiểu của biến pi thành int
+				int casting = (int)pi;
+
+				// In ra giá trị của biến pi sau khi đã ép kiểu
+				printf("Pi = %d\n", casting);
+
+					// Kết quả in ra sẽ là 3 vì đây là số nguyên
+					// và phần thập phân phía sau của số pi sẽ bị mất
+
+----------------------------------------
+
+* Lưu ý: Cần phải ép ểu trước khi tiến hành tính toán.
 
 	Ví dụ:
-		// Khi báo một biến pi kiểu double
-		double pi = 3.14;
+		// Kết quả sẽ là 0
+		// vì đang lấy hai số nguyên chia cho nhau
+		double ketQua = 1 / 2;
 
-		// Khai báo biến trung gian để ép kiểu của biến pi thành int
-		int casting = (int)pi;
+		// Ép kiểu - Đúng
+		// Vì lấy số 1 ép kiểu về double
+		// rồi sau đó mới lấy số đó chia cho 2
+		double ketQua = (double)1 / 2;
 
-		// In ra giá trị của biến pi sau khi đã ép kiểu
-		printf("Pi = %d\n", casting);
-
-		// Kết quả in ra sẽ là 3 vì đây là số nguyên
-		// và phần thập phân phía sau của số pi sẽ bị mất
+		// Ép kiểu - Sai
+		// Vì sau khi thực hiện phép tính với hai số nguyên
+		// sau đó mới lấy kết quả phép tính đem đi ép kiểu
+		double ketQua = (double)1 / 2;
 
 ------------------------------------------------------------
 
